@@ -8,20 +8,20 @@ from sqlalchemy import Table, Column, String, DateTime, MetaData
 from ckan.plugins import implements, SingletonPlugin
 from ckan.plugins.toolkit import config
 from ckan.model import meta
-from ckan.plugins.interfaces import IAuthenticator, IResourceView, IDatasetForm
+from ckan.plugins.interfaces import IAuthenticator, IPackageController, IResourceView, IDatasetForm
 log = logging.getLogger(__name__)
 
 
 class LogActionPlugin(plugins.SingletonPlugin):
     implements(IAuthenticator, inherit=True)
     implements(IResourceView, inherit=True)
-    implements(IDatasetForm, inherit=True)
+    implements(IPackageController, inherit=True)
 
     def _get_log_table(self):
         engine = meta.engine
         metadata = MetaData(bind=engine)
         log_table = Table(
-            'LogActions',
+            'log_actions',
             metadata,
             Column('id', String, primary_key=True),
             Column('log_date', DateTime),
