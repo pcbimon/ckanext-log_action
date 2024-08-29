@@ -64,7 +64,7 @@ class LogActionPlugin(plugins.SingletonPlugin):
     #     return success
     def after_dataset_show(self,context: Context, dataset_dict:dict[str, Any])-> None:
         log.debug('add log action')
-        log.debug(dataset_dict)
+        log.debug(context)
         user = None
         if current_user.is_authenticated:
             user = current_user.name
