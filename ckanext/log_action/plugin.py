@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, Optional, Union, cast
 import ckan.plugins as plugins
 import uuid
 import json
@@ -10,6 +10,10 @@ from ckan.plugins.toolkit import config
 from ckan.model import meta
 from ckan.plugins.interfaces import IAuthenticator, IPackageController, IResourceView, IDatasetForm
 from ckan.types import Context
+from flask_login import current_user as _cu
+
+from ckan.types.model import Model
+current_user = cast(Union["Model.User", "Model.AnonymousUser"], _cu)
 log = logging.getLogger(__name__)
 
 
@@ -34,7 +38,7 @@ class LogActionPlugin(plugins.SingletonPlugin):
         metadata.create_all(engine)
         return log_table
 
-    def _log_action(self, user_name: String, action_name:String, 
+    def _log_action(self, user_name: Optional[String], action_name:String, 
                     action_type: Optional[String] =None, 
                     details: Optional[Any]=None):
         log_table = self._get_log_table()
@@ -60,8 +64,11 @@ class LogActionPlugin(plugins.SingletonPlugin):
     #     return success
     def after_dataset_show(self,context: Context, dataset_dict:dict[str, Any])-> None:
         log.debug('add log action')
+        user = None
+        if current_user.is_authenticated:
+            user = current_user.name
         self._log_action(
-            user_name=dataset_dict['user_name'],
+            user_name=user,
             action_name='dataset',
             action_type='view',
             details={'dataset_id': dataset_dict['id']}
