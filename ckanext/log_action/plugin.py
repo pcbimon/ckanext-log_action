@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 
 class LogActionPlugin(plugins.SingletonPlugin):
-    implements(IAuthenticator)
+    implements(IAuthenticator, inherit=True)
     implements(IResourceView, inherit=True)
     implements(IDatasetForm, inherit=True)
 
