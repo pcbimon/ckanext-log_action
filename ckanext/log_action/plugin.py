@@ -9,6 +9,7 @@ from ckan.plugins import implements, SingletonPlugin
 from ckan.plugins.toolkit import config
 from ckan.model import meta
 from ckan.plugins.interfaces import IAuthenticator, IPackageController, IResourceView, IDatasetForm
+from ckan.types import Context
 log = logging.getLogger(__name__)
 
 
@@ -57,7 +58,7 @@ class LogActionPlugin(plugins.SingletonPlugin):
     #         details={'status': status}
     #     )
     #     return success
-    def after_dataset_show(self, dataset_dict:dict[str, Any])-> None:
+    def after_dataset_show(self,context: Context, dataset_dict:dict[str, Any])-> None:
         log.debug('add log action')
         self._log_action(
             user_name=dataset_dict['user_name'],
