@@ -1,0 +1,14 @@
+# log_action-js:
+#   filter: rjsmin
+#   output: ckanext-log_action/%(version)s-log_action.js
+#   contents:
+#     - js/log_action.js
+#   extra:
+#     preload:
+#       - base/main
+
+# log_action-css:
+#   filter: cssrewrite
+#   output: ckanext-log_action/%(version)s-log_action.css
+#   contents:
+#     - css/log_action.css
